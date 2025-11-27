@@ -29,6 +29,9 @@ venv/
 .venv/
 **/venv/
 **/.venv/
+.idea/
+/.idea/
+/.idea/sonarlint
 
 # ignore wheel files and dist directories
 *.whl

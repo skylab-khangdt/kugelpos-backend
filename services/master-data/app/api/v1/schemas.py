@@ -51,6 +51,10 @@ from app.api.common.schemas import (
     BaseItemBookTabDeleteResponse,
     BaseItemBookButtonDeleteResponse,
     BaseTaxMasterResponse,
+    BaseCategoryDiscountResponse,
+    BaseCategoryDiscountCreateRequest,
+    BaseCategoryDiscountUpdateRequest,
+    BaseCategoryDiscountDeleteResponse,
 )
 
 # Staff related schema definitions
@@ -511,6 +515,50 @@ class ItemBookButtonDeleteResponse(BaseItemBookButtonDeleteResponse):
 
 
 class TaxMasterResponse(BaseTaxMasterResponse):
+    """
+    Tax Master Response Schema
+
+    Defines the response format for tax master data from the API.
+    Contains tax code, tax type, tax name, rate value, rounding digit,
+    rounding method, and other information.
+    """
+
+    pass
+
+class CategoryDiscountResponse(BaseCategoryDiscountResponse):
+    """
+    Tax Master Response Schema
+
+    Defines the response format for tax master data from the API.
+    Contains tax code, tax type, tax name, rate value, rounding digit,
+    rounding method, and other information.
+    """
+
+    pass
+
+class CategoryDiscountCreateRequest(BaseCategoryDiscountCreateRequest):
+    """
+    Tax Master Response Schema
+
+    Defines the response format for tax master data from the API.
+    Contains tax code, tax type, tax name, rate value, rounding digit,
+    rounding method, and other information.
+    """
+
+    pass
+
+class CategoryDiscountUpdateRequest(BaseCategoryDiscountUpdateRequest):
+    """
+    Tax Master Response Schema
+
+    Defines the response format for tax master data from the API.
+    Contains tax code, tax type, tax name, rate value, rounding digit,
+    rounding method, and other information.
+    """
+
+    pass
+
+class CategoryDiscountDeleteResponse(BaseCategoryDiscountDeleteResponse):
     """
     Tax Master Response Schema
 

@@ -51,6 +51,7 @@ from app.api.v1.item_book_master import router as v1_item_book_master_router
 from app.api.v1.payment_master import router as v1_payment_master_router
 from app.api.v1.settings_master import router as v1_settings_master_router
 from app.api.v1.category_master import router as v1_category_master_router
+from app.api.v1.category_discounts import router as v1_category_discounts_router
 from app.api.v1.tenant import router as v1_tenant_router
 from app.api.v1.tax_master import router as v1_tax_master_router
 from app.config.settings import settings
@@ -105,6 +106,10 @@ app.include_router(
 app.include_router(
     v1_category_master_router, prefix="/api/v1", tags=["Category Master"]
 )  # Item category hierarchy management
+
+app.include_router(
+    v1_category_discounts_router, prefix="/api/v1", tags=["Category Discounts"]
+)  # Item category discount hierarchy management
 
 app.include_router(v1_tenant_router, prefix="/api/v1", tags=["Tenant"])  # Tenant management operations
 

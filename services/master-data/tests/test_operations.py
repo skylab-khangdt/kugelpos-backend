@@ -758,3 +758,93 @@ async def test_operations(http_client):
     assert res.get("metadata").get("page") == 1
     assert res.get("metadata").get("limit") == 20
     # Note: sort format in metadata might be different from input
+
+    # Test create category discount
+    category_discount_data = {"categoryDiscountCode": "string-01", "discountPercent": 80, "startDate": "20250101", "endDate": "20260101"}
+    response = await http_client.post(f"/api/v1/tenants/{tenant_id}/category_discounts", json=category_discount_data, headers=header)
+    assert response.status_code == status.HTTP_201_CREATED
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is True
+    assert res.get("code") == status.HTTP_201_CREATED
+    assert res.get("data").get("categoryDiscountCode") == "string-01"
+
+    # get all category_discount
+    response = await http_client.get(f"/api/v1/tenants/{tenant_id}/category_discounts", headers=header)
+    assert response.status_code == status.HTTP_200_OK
+    res = response.json()
+    print(f"*** get all categories response: {res}")
+    assert res.get("success") is True
+    # Check metadata for paginated response
+    assert res.get("metadata") is not None
+    assert res.get("metadata").get("total") >= 1
+    assert res.get("metadata").get("page") == 1
+    assert res.get("metadata").get("limit") > 0
+
+    # get category_discount detail
+    response = await http_client.get(f"/api/v1/tenants/{tenant_id}/category_discounts/string-01", headers=header)
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is True
+    assert res.get("code") == status.HTTP_200_OK
+    assert res.get("data").get("categoryDiscountCode") == "string-01"
+
+    # update category_discount
+    category_discount_data = {"discountPercent": 90, "startDate": "20250201",
+                              "endDate": "20260201"}
+    response = await http_client.put(f"/api/v1/tenants/{tenant_id}/category_discounts/string-01",
+                                      json=category_discount_data,
+                                      headers=header)
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is True
+    assert res.get("code") == status.HTTP_200_OK
+    assert res.get("data").get("discountPercent") == 90
+    assert res.get("data").get("startDate") == "20250201"
+    assert res.get("data").get("endDate") == "20260201"
+
+    # Test create category discount existed
+    category_discount_data = {"categoryDiscountCode": "string-01", "discountPercent": 80, "startDate": "20250101",
+                              "endDate": "20260101"}
+    response = await http_client.post(f"/api/v1/tenants/{tenant_id}/category_discounts", json=category_discount_data,
+                                      headers=header)
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is False
+    assert res.get("code") == status.HTTP_400_BAD_REQUEST
+
+    # Test create category discount with invalid date
+    category_discount_data = {"categoryDiscountCode": "string-01", "discountPercent": 80, "startDate": "string",
+                              "endDate": "string"}
+    response = await http_client.post(f"/api/v1/tenants/{tenant_id}/category_discounts", json=category_discount_data,
+                                      headers=header)
+    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is False
+    assert res.get("code") == status.HTTP_500_INTERNAL_SERVER_ERROR
+
+    # Test update category discount with invalid date
+    category_discount_data = {"discountPercent": 80, "startDate": "string",
+                              "endDate": "string"}
+    response = await http_client.put(f"/api/v1/tenants/{tenant_id}/category_discounts/string-01",
+                                     json=category_discount_data,
+                                     headers=header)
+    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is False
+    assert res.get("code") == status.HTTP_500_INTERNAL_SERVER_ERROR
+
+    # Test create category discount with invalid percent
+    await http_client.delete(f"/api/v1/tenants/{tenant_id}/category_discounts/string-01", headers=header)
+    category_discount_data = {"categoryDiscountCode": "string-01", "discountPercent": 800, "startDate": "2025-01-01",
+                              "endDate": "2026-01-01"}
+    response = await http_client.post(f"/api/v1/tenants/{tenant_id}/category_discounts", json=category_discount_data,
+                                      headers=header)
+    assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+    res = response.json()
+    print(f"Response: {res}")
+    assert res.get("success") is False
+    assert res.get("code") == status.HTTP_500_INTERNAL_SERVER_ERROR

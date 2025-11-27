@@ -16,6 +16,7 @@ from app.api.common.schemas import (
     BaseItemBookTab,
     BaseItemBookButton,
     BaseTaxMasterResponse,
+    BaseCategoryDiscountResponse,
 )
 from app.models.documents.item_common_master_document import ItemCommonMasterDocument
 from app.models.documents.item_store_master_document import ItemStoreMasterDocument
@@ -23,6 +24,7 @@ from app.models.documents.item_store_detail_document import ItemStoreDetailDocum
 from app.models.documents.payment_master_document import PaymentMasterDocument
 from app.models.documents.settings_master_document import SettingsMasterDocument
 from app.models.documents.category_master_document import CategoryMasterDocument
+from app.models.documents.category_discounts_document import CategoryDiscountDocument
 from app.models.documents.item_book_master_document import (
     ItemBookMasterDocument,
     ItemBookCategory,
@@ -202,3 +204,15 @@ class SchemasTransformer:
 
         logger.debug(f"return_tax: {return_tax}")
         return return_tax
+
+    def transform_category_discount(self, category_doc: CategoryDiscountDocument) -> BaseCategoryDiscountResponse:
+        return BaseCategoryDiscountResponse(
+            category_discount_code=category_doc.category_discount_code,
+            discount_percent=category_doc.discount_percent,
+            start_date=category_doc.start_date,
+            end_date=category_doc.end_date,
+            entry_datetime=category_doc.created_at.strftime("%Y-%m-%d %H:%M:%S") if category_doc.created_at else None,
+            last_update_datetime=(
+                category_doc.updated_at.strftime("%Y-%m-%d %H:%M:%S") if category_doc.updated_at else None
+            ),
+        )

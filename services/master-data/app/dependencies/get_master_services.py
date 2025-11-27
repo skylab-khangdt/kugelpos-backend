@@ -11,6 +11,7 @@ from kugel_common.database import database as db_helper
 
 from app.config.settings import settings
 from app.services.category_master_service import CategoryMasterService
+from app.services.category_discounts_service import CategoryDiscountService
 from app.services.item_book_master_service import ItemBookMasterService
 from app.services.item_common_master_service import ItemCommonMasterService
 from app.services.item_store_master_service import ItemStoreMasterService
@@ -20,6 +21,7 @@ from app.services.staff_master_service import StaffMasterService
 from app.services.tax_master_service import TaxMasterService
 
 from app.models.repositories.category_master_repository import CategoryMasterRepository
+from app.models.repositories.category_discounts_repository import CategoryDiscountRepository
 from app.models.repositories.item_book_master_repository import ItemBookMasterRepository
 from app.models.repositories.item_common_master_repository import ItemCommonMasterRepository
 from app.models.repositories.item_store_master_repository import ItemStoreMasterRepository
@@ -47,6 +49,24 @@ async def get_category_master_service_async(tenant_id: str) -> CategoryMasterSer
     logger.debug(f"get_category_master_service_async: tenant_id->{tenant_id}")
     db = await db_helper.get_db_async(f"{settings.DB_NAME_PREFIX}_{tenant_id}")
     return CategoryMasterService(category_master_repo=CategoryMasterRepository(db, tenant_id))
+
+
+async def get_category_discount_service_async(tenant_id: str) -> CategoryDiscountService:
+    """
+    Dependency function to create and inject a CategoryDiscountService instance.
+
+    This function creates the necessary repository and injects it into the service,
+    providing access to the tenant-specific database for category discount operations.
+
+    Args:
+        tenant_id: The tenant identifier used to select the appropriate database
+
+    Returns:
+        CategoryDiscountService: Configured service instance for the specified tenant
+    """
+    logger.debug(f"get_category_discount_service_async: tenant_id->{tenant_id}")
+    db = await db_helper.get_db_async(f"{settings.DB_NAME_PREFIX}_{tenant_id}")
+    return CategoryDiscountService(category_discount_repo=CategoryDiscountRepository(db, tenant_id))
 
 
 async def get_item_book_service_async(tenant_id: str, store_code: str = None) -> ItemBookMasterService:

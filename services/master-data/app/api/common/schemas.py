@@ -622,3 +622,58 @@ class BaseTaxMasterResponse(BaseSchemaModel):
     round_method: Optional[str] = None
     entry_datetime: Optional[str] = None
     last_update_datetime: Optional[str] = None
+
+# Category Discount
+class BaseCategoryDiscountResponse(BaseSchemaModel):
+    """
+    Base Category Discount Response Schema
+
+    Defines all fields required for category discount responses.
+    Includes category discount code, discount_percent, start date, and end date
+    """
+
+    category_discount_code: str
+    discount_percent: float
+    start_date: str
+    end_date: str
+    entry_datetime: str
+    last_update_datetime: Optional[str] = None
+
+
+class BaseCategoryDiscountCreateRequest(BaseSchemaModel):
+    """
+    Base Category Discount Creation Request Schema
+
+    Defines fields required for creating a new category discount record.
+    Includes category discount code, discount percent, start date, and end date.
+    """
+
+    category_discount_code: str
+    discount_percent: float
+    start_date: str
+    end_date: str
+
+
+class BaseCategoryDiscountUpdateRequest(BaseSchemaModel):
+    """
+    Base Category Discount Update Request Schema
+
+    Defines fields required for updating an existing category record.
+    Includes discount percent, start time, and end time.
+    Category discount code is obtained from the URL path.
+    """
+
+    discount_percent: float
+    start_date: str
+    end_date: str
+
+
+class BaseCategoryDiscountDeleteResponse(BaseSchemaModel):
+    """
+    Base Category Discount Delete Response Schema
+
+    Defines fields for returning the identification of a deleted category discount.
+    Includes the deleted category code.
+    """
+
+    category_discount_code: str
